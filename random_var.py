@@ -20,7 +20,7 @@ class RandomVariable():
         return np.random.choice(self.values, p=self.distribution, size=n)
 
     def get_all_sequences(self, n):
-        return itertools.product(*[self.values for i in range(n)])
+        return list(itertools.product(*[self.values for i in range(n)]))
 
     def partition_weakly_typical_set(self, seq_set, epsilon):
         wts = set()
@@ -28,9 +28,23 @@ class RandomVariable():
         for seq in seq_set:
             empirical_entropy = (-1/len(seq) * math.log(self.p(seq))/math.log(2))
             true_entropy = self.entropy
-            if abs(empirical_entropy - true_entropy) < epsilon:
+            if abs(empirical_entropy - true_entropy) <= epsilon:
                 wts.add(seq)
             else:
                 comp.add(seq)
 
         return wts, comp
+
+    def partition_strongly_typical_set(self, seq_set, delta):
+        sts = set()
+        comp = set()
+        for seq in seq_set:
+            sum_ = 0
+            for symbol in set(seq):
+                sum_ += abs(seq.count(symbol)/len(seq) - self.distribution[symbol])
+            if sum_<= delta:
+                sts.add(seq)
+            else:
+                comp.add(seq)
+
+        return sts, comp
