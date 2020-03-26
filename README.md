@@ -1,2 +1,2 @@
 # weakly-typical-set
-Empirical demo of some inequalitites related to weakly typical sets in information theory
+Empirical demo of some inequalitites related to weakly and strongly typical sets in information theory
